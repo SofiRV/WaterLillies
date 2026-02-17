@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/splash_screen"
-    android:gravity="center">
+    android:gravity="center"
+    android:orientation="horizontal">
 
     <!-- Solo la imagen de fondo, sin botones -->
 

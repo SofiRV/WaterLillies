@@ -1,4 +1,4 @@
-package com.sofirv. waterlillies;
+package com.sofirv.waterlillies;
 
 public class Duck {
     private int row;

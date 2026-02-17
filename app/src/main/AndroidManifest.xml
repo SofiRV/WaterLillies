@@ -12,9 +12,8 @@
         android:theme="@style/Theme.WaterLillies"
         tools:targetApi="31">
 
-        <!-- Pantalla inicial -->
         <activity
-            android:name=".MainActivity"
+            android:name=".SplashActivity"
             android:exported="true"
             android:screenOrientation="landscape">
             <intent-filter>
@@ -23,7 +22,6 @@
             </intent-filter>
         </activity>
 
-        <!-- Pantalla del juego -->
         <activity
             android:name=".MenuActivity"
             android:exported="false"
