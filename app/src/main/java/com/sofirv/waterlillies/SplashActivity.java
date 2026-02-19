@@ -1,11 +1,11 @@
-// SplashActivity.java
 package com.sofirv.waterlillies;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -14,10 +14,8 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        // Pantalla full screen
         hideSystemUI();
 
-        // Espera 2 segundos y abre el menú
         new Handler().postDelayed(() -> {
             startActivity(new Intent(SplashActivity.this, MenuActivity.class));
             finish();

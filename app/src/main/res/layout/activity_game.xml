@@ -1,46 +1,35 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2E7BB4">
+    android:background="@drawable/bg_water">
 
-    <!-- Vista del juego (ocupa toda la pantalla) -->
     <com.sofirv.waterlillies.GameView
         android:id="@+id/game_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <!-- Botones con imágenes sobre el juego -->
-    <LinearLayout
+    <ImageButton
+        android:id="@+id/btn_restart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
-        android:orientation="horizontal"
-        android:gravity="end">
+        android:layout_alignParentStart="true"
+        android:src="@drawable/restart"
+        android:background="@android:color/transparent"
+        android:maxHeight="150dp"
+        android:scaleType="fitCenter"/>
 
-        <!-- Botón de reinicio con imagen -->
-        <ImageButton
-            android:id="@+id/btn_restart"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_marginBottom="15dp"
-            android:background="@android:color/transparent"
-            android:scaleType="fitCenter"
-            android:src="@drawable/restart"
-            android:contentDescription="Reiniciar nivel" />
-
-        <!-- Botón de siguiente nivel con imagen -->
-        <ImageButton
-            android:id="@+id/btn_next_level"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:background="@android:color/transparent"
-            android:scaleType="fitCenter"
-            android:src="@drawable/next"
-            android:contentDescription="Siguiente nivel" />
-    </LinearLayout>
-
+    <ImageButton
+        android:id="@+id/btn_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/next"
+        android:background="@android:color/transparent"
+        android:maxHeight="150dp"
+        android:scaleType="fitCenter"/>
 </RelativeLayout>
