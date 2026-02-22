@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="0dp"
     android:orientation="vertical">
 
     <TextView
@@ -17,13 +18,11 @@
         android:paddingTop="40dp"
         android:paddingBottom="10dp"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:textAlignment="center"/>
+        android:paddingRight="10dp"/>
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_scores"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_height="match_parent"/>
 </LinearLayout>

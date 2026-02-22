@@ -110,25 +110,6 @@ public class ScoreDBHelper extends SQLiteOpenHelper {
         return db.delete(TABLE_SCORES, COLUMN_ID + "=?", new String[]{String.valueOf(id)});
     }
 
-    // Modelo Score (puedes ponerlo en un archivo aparte)
-    public static class Score {
-        public int id;
-        public String player;
-        public int score;
-        public String game;
-        public String date;
-
-        public Score(int id, String player, int score, String game, String date) {
-            this.id = id;
-            this.player = player;
-            this.score = score;
-            this.game = game;
-            this.date = date;
-        }
-    }
-
-    // Agrega estos métodos a ScoreDBHelper
-
     // Leer scores por juego y orden
     public List<Score> getScoresByGameOrdered(String game, boolean bestFirst) {
         List<Score> scores = new ArrayList<>();

@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -11,29 +12,29 @@ import com.sofirv.waterlilies.R;
 
 import java.util.List;
 
-public class ScoresAdapter extends RecyclerView.Adapter<ScoresAdapter.ViewHolder> {
+public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ViewHolder> {
 
-    private List<ScoreDBHelper.Score> scores;
+    private final List<Score> scores;
 
-    public ScoresAdapter(List<ScoreDBHelper.Score> scores) {
+    public ScoreAdapter(List<Score> scores) {
         this.scores = scores;
     }
 
     @NonNull
     @Override
-    public ScoresAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_score, parent, false);
         return new ViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ScoresAdapter.ViewHolder holder, int position) {
-        ScoreDBHelper.Score score = scores.get(position);
-        holder.tvPlayer.setText(score.player);
-        holder.tvScore.setText(String.valueOf(score.score));
-        holder.tvGame.setText(score.game);
-        holder.tvDate.setText(score.date);
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Score score = scores.get(position);
+        holder.tvPlayer.setText("Player: " + score.player);
+        holder.tvScore.setText("Score: " + score.score);
+        holder.tvGame.setText("Game: " + score.game);
+        holder.tvDate.setText("Date: " + score.date);
     }
 
     @Override
@@ -42,8 +43,9 @@ public class ScoresAdapter extends RecyclerView.Adapter<ScoresAdapter.ViewHolder
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvPlayer, tvScore, tvGame, tvDate;
-        public ViewHolder(View itemView) {
+        TextView tvPlayer, tvScore, tvGame, tvDate;
+
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvPlayer = itemView.findViewById(R.id.tvPlayer);
             tvScore = itemView.findViewById(R.id.tvScore);
