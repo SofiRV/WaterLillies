@@ -1,4 +1,4 @@
-package com.sofirv.waterlillies;
+package com.sofirv.waterlillies.duckgame;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+
+import com.sofirv.waterlillies.R;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -32,7 +34,7 @@ public class MenuActivity extends AppCompatActivity {
             getSupportActionBar().hide();
         }
 
-        setContentView(R.layout.activity_menu);
+        setContentView(R.layout.duck_activity_menu);
 
         // Inicializar managers
         progressManager = new ProgressManager(this);

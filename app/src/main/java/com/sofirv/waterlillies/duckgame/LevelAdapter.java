@@ -1,4 +1,4 @@
-package com.sofirv.waterlillies;
+package com.sofirv.waterlillies.duckgame;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
+import com.sofirv.waterlillies.R;
 
 public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.LevelViewHolder> {
 
@@ -32,7 +32,7 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.LevelViewHol
     @NonNull
     @Override
     public LevelViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_level, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.duck_item_level, parent, false);
         return new LevelViewHolder(view);
     }
 

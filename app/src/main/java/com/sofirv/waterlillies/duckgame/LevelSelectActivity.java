@@ -1,4 +1,4 @@
-package com.sofirv.waterlillies;
+package com.sofirv.waterlillies.duckgame;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sofirv.waterlillies.R;
+
 public class LevelSelectActivity extends AppCompatActivity {
 
     private ProgressManager progressManager;
@@ -18,7 +20,7 @@ public class LevelSelectActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_level_select);
+        setContentView(R.layout.duck_activity_level_select);
 
         progressManager = new ProgressManager(this);
         levelManager = new LevelManager(this);

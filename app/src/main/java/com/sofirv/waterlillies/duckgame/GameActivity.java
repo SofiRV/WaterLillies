@@ -1,5 +1,7 @@
-package com.sofirv.waterlillies;
+package com.sofirv.waterlillies.duckgame;
 
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -8,11 +10,15 @@ import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.sofirv.waterlillies.R;
+
 public class GameActivity extends AppCompatActivity {
 
     private GameView gameView;
     private ImageButton btnRestart;
     private ImageButton btnNextLevel;
+    private ImageButton btnHome;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,16 +36,26 @@ public class GameActivity extends AppCompatActivity {
         }
 
         // ⚠️ IMPORTANTE: usar el XML
-        setContentView(R.layout.activity_game);
+        setContentView(R.layout.duck_activity_game);
 
         // Referencias
         gameView = findViewById(R.id.game_view);
         btnRestart = findViewById(R.id.btn_restart);
         btnNextLevel = findViewById(R.id.btn_next);
+        btnHome = findViewById(R.id.btn_home);
+
 
         // Botones
         btnRestart.setOnClickListener(v -> gameView.restartLevel());
         btnNextLevel.setOnClickListener(v -> gameView.goToNextLevel());
+        btnHome.setOnClickListener(v -> {
+            Intent intent = new Intent(this, MenuActivity.class);
+            startActivity(intent);
+            finish();
+        });
+
+
+        // Ocultar barra de estado
 
         hideSystemUI();
     }
@@ -63,4 +79,5 @@ public class GameActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
         );
     }
+
 }

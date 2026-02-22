@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_water">
+    android:background="@drawable/duck_bg_water">
 
     <!-- Contenedor vertical: título + nenúfares -->
     <LinearLayout
@@ -50,7 +50,7 @@
                 android:maxHeight="200dp"
                 android:scaleType="fitCenter"
                 android:background="@android:color/transparent"
-                android:src="@drawable/lily_pad_play"
+                android:src="@drawable/duck_lily_pad_play"
                 android:contentDescription="Jugar"
                 android:layout_margin="8dp"/>
 
@@ -63,7 +63,7 @@
                 android:maxHeight="200dp"
                 android:scaleType="fitCenter"
                 android:background="@android:color/transparent"
-                android:src="@drawable/lily_pad_continue"
+                android:src="@drawable/duck_lily_pad_continue"
                 android:contentDescription="Continuar"
                 android:layout_margin="8dp"/>
 
@@ -76,7 +76,7 @@
                 android:maxHeight="200dp"
                 android:scaleType="fitCenter"
                 android:background="@android:color/transparent"
-                android:src="@drawable/lily_pad_levels"
+                android:src="@drawable/duck_lily_pad_levels"
                 android:contentDescription="Niveles"
                 android:layout_margin="8dp"/>
 

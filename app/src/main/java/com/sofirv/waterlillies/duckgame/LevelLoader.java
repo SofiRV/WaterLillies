@@ -1,7 +1,8 @@
-package com.sofirv.waterlillies;
+package com.sofirv.waterlillies.duckgame;
 
 import android.content.Context;
 import android.content.res.XmlResourceParser;
+
 import org.xmlpull.v1.XmlPullParser;
 
 public class LevelLoader {

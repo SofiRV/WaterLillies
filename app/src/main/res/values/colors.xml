@@ -2,4 +2,23 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="barbie_pink">#E0218A</color>
+    <color name="baby_pink">#FFB7CE</color>
+    <color name="pink_2">#FFD1E8</color>
+    <color name="pink_4">#FFB3D9</color>
+    <color name="pink_8">#FF96C7</color>
+    <color name="pink_16">#FF7EB8</color>
+    <color name="pink_32">#FF66AB</color>
+    <color name="pink_64">#FF4D99</color>
+    <color name="pink_128">#FF66CC</color>
+    <color name="pink_256">#FF80D5</color>
+    <color name="pink_512">#FFA3E6</color>
+    <color name="pink_1024">#FFC8F2</color>
+    <color name="pink_2048">#FFE6FA</color>
+
+    <!-- Para números mayores a 2048 -->
+    <color name="pink_big">#FFF5FF</color>
+
 </resources>

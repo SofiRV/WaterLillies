@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_water"
+    android:background="@drawable/duck_bg_water"
     android:padding="16dp">
 
     <ImageButton
@@ -14,7 +14,7 @@
         android:layout_margin="16dp"
         android:background="@android:color/transparent"
         android:scaleType="fitCenter"
-        android:src="@drawable/ic_back"
+        android:src="@drawable/duck_ic_back"
         android:contentDescription="Volver al menú" />
     <!-- Título -->
     <TextView

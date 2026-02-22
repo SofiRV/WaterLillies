@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Water Lillies</string>
+    <string name="_2048">2048</string>
+    <string name="score">Score</string>
+    <string name="score_value">0</string>
+    <string name="high_score">High Score</string>
+    <string name="high_score_value">0</string>
+    <string name="reset">Reset</string>
+    <string name="step_back">Step back</string>
 </resources>

@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:scaleType="fitCenter"
         android:contentDescription="Nivel"
-        android:src="@drawable/basic_lily"/>
+        android:src="@drawable/duck_basic_lily"/>
 
     <!-- Texto con número de nivel -->
     <TextView
