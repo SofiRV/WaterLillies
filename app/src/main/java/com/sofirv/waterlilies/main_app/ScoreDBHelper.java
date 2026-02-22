@@ -1,10 +1,10 @@
 package com.sofirv.waterlilies.main_app;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.content.ContentValues;
-import android.database.Cursor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +18,7 @@ public class ScoreDBHelper extends SQLiteOpenHelper {
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_PLAYER = "player";
     public static final String COLUMN_SCORE = "score";
+    public static final String COLUMN_GAME = "game";
     public static final String COLUMN_DATE = "date";
 
     public ScoreDBHelper(Context context) {
@@ -26,13 +27,14 @@ public class ScoreDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_SCORES_TABLE = "CREATE TABLE " + TABLE_SCORES + "("
+        String CREATE_TABLE = "CREATE TABLE " + TABLE_SCORES + "("
                 + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COLUMN_PLAYER + " TEXT, "
                 + COLUMN_SCORE + " INTEGER, "
+                + COLUMN_GAME + " TEXT, "
                 + COLUMN_DATE + " DATETIME DEFAULT CURRENT_TIMESTAMP"
                 + ")";
-        db.execSQL(CREATE_SCORES_TABLE);
+        db.execSQL(CREATE_TABLE);
     }
 
     @Override
@@ -41,42 +43,114 @@ public class ScoreDBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    // Guardar puntuación
-    public void addScore(String player, int score) {
+    // CREATE
+    public long addScore(String player, int score, String game) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_PLAYER, player);
         values.put(COLUMN_SCORE, score);
-
-        db.insert(TABLE_SCORES, null, values);
-        db.close();
+        values.put(COLUMN_GAME, game);
+        return db.insert(TABLE_SCORES, null, values);
     }
 
-    // Obtener top N puntuaciones
-    public Cursor getTopScores(int limit) {
+    // READ - todos los scores
+    public List<Score> getAllScores() {
+        List<Score> scores = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.query(TABLE_SCORES,
-                null,
-                null,
-                null,
-                null,
-                null,
-                COLUMN_SCORE + " DESC",
-                String.valueOf(limit));
+        Cursor cursor = db.query(TABLE_SCORES, null, null, null, null, null, COLUMN_SCORE + " DESC");
+        if (cursor.moveToFirst()) {
+            do {
+                Score score = new Score(
+                        cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PLAYER)),
+                        cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_SCORE)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_GAME)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE))
+                );
+                scores.add(score);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return scores;
     }
 
-    public List<String> getAllScoresAsStrings() {
-        List<String> scores = new ArrayList<>();
-        Cursor cursor = getTopScores(50); // O el limite que prefieras
-        if (cursor != null && cursor.moveToFirst()) {
+    // READ - filtrar por juego
+    public List<Score> getScoresByGame(String game) {
+        List<Score> scores = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_SCORES, null, COLUMN_GAME + "=?", new String[]{game}, null, null, COLUMN_SCORE + " DESC");
+        if (cursor.moveToFirst()) {
             do {
-                String player = cursor.getString(cursor.getColumnIndex(COLUMN_PLAYER));
-                int score = cursor.getInt(cursor.getColumnIndex(COLUMN_SCORE));
-                String date = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
-                scores.add(player + " - " + score + " (" + date + ")");
+                scores.add(new Score(
+                        cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PLAYER)),
+                        cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_SCORE)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_GAME)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE))
+                ));
             } while (cursor.moveToNext());
-            cursor.close();
         }
+        cursor.close();
+        return scores;
+    }
+
+    // UPDATE
+    public int updateScore(int id, String player, int score, String game) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_PLAYER, player);
+        values.put(COLUMN_SCORE, score);
+        values.put(COLUMN_GAME, game);
+        return db.update(TABLE_SCORES, values, COLUMN_ID + "=?", new String[]{String.valueOf(id)});
+    }
+
+    // DELETE
+    public int deleteScore(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(TABLE_SCORES, COLUMN_ID + "=?", new String[]{String.valueOf(id)});
+    }
+
+    // Modelo Score (puedes ponerlo en un archivo aparte)
+    public static class Score {
+        public int id;
+        public String player;
+        public int score;
+        public String game;
+        public String date;
+
+        public Score(int id, String player, int score, String game, String date) {
+            this.id = id;
+            this.player = player;
+            this.score = score;
+            this.game = game;
+            this.date = date;
+        }
+    }
+
+    // Agrega estos métodos a ScoreDBHelper
+
+    // Leer scores por juego y orden
+    public List<Score> getScoresByGameOrdered(String game, boolean bestFirst) {
+        List<Score> scores = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String order = bestFirst ? COLUMN_SCORE + " DESC" : COLUMN_SCORE + " ASC";
+        Cursor cursor;
+        if ("Todos".equals(game) || game == null) {
+            cursor = db.query(TABLE_SCORES, null, null, null, null, null, order);
+        } else {
+            cursor = db.query(TABLE_SCORES, null, COLUMN_GAME + "=?", new String[]{game}, null, null, order);
+        }
+        if (cursor.moveToFirst()) {
+            do {
+                scores.add(new Score(
+                        cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PLAYER)),
+                        cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_SCORE)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_GAME)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE))));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
         return scores;
     }
 }

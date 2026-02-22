@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
@@ -21,8 +20,10 @@
         android:paddingRight="10dp"
         android:textAlignment="center"/>
 
-    <ListView
-        android:id="@+id/scores_list_view"
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_scores"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 </LinearLayout>

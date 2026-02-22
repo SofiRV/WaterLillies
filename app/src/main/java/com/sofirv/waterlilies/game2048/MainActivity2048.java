@@ -20,6 +20,7 @@ import com.sofirv.waterlilies.R;
 import com.sofirv.waterlilies.duckgame.LevelSelectActivity;
 import com.sofirv.waterlilies.duckgame.MenuActivity;
 import com.sofirv.waterlilies.main_app.HomeActivity;
+import com.sofirv.waterlilies.main_app.ScoreDBHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -140,7 +141,7 @@ public class MainActivity2048 extends AppCompatActivity {
                 if (i < 3 && grid[i][j] == grid[i + 1][j]) return false;
             }
         }
-
+        onGameOver(score);
         return true;
     }
 
@@ -499,6 +500,12 @@ public class MainActivity2048 extends AppCompatActivity {
         if (hasFocus) {
             hideSystemUI();
         }
+    }
+
+    private void onGameOver(int score) {
+        ScoreDBHelper dbHelper = new ScoreDBHelper(this);
+        dbHelper.addScore("Jugador", score, "2048");
+        Toast.makeText(this, "Game Over! Puntaje: " + score, Toast.LENGTH_SHORT).show();
     }
 
 

@@ -375,11 +375,10 @@ public class GameView extends View {
         Toast.makeText(getContext(),
                 "¡Juego completado! 🎉\nEstrellas totales: " + totalStars + "/15",
                 Toast.LENGTH_LONG).show();
-        saveScore(gameBoard.calculateStars() * 100); // ejemplo: cada estrella = 100 puntos
-    }
-    private void saveScore(int score) {
+        int score= totalStars*100;
         ScoreDBHelper dbHelper = new ScoreDBHelper(getContext());
-        String playerName = "Sofi"; // o pedir al usuario su nombre
-        dbHelper.addScore(playerName, score);
+        String player = "Jugador"; // Puedes pedirlo en un dialog
+        Toast.makeText(getContext(), "¡Ganaste! Puntaje: " + score, Toast.LENGTH_SHORT).show();
+        dbHelper.addScore(player, score, "Duck Game");
     }
 }
