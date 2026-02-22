@@ -1,7 +1,6 @@
 package com.sofirv.waterlilies.game2048;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.View;
@@ -17,8 +16,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.sofirv.waterlilies.R;
-import com.sofirv.waterlilies.duckgame.LevelSelectActivity;
-import com.sofirv.waterlilies.duckgame.MenuActivity;
 import com.sofirv.waterlilies.main_app.HomeActivity;
 import com.sofirv.waterlilies.main_app.ScoreDBHelper;
 
@@ -27,21 +24,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
 import java.util.Stack;
 
 public class MainActivity2048 extends AppCompatActivity {
 
     int[][] grid = new int[4][4];
     int score = 0;
-    int highScore = 0;
     private TextView scoreTextView;
     private TextView highScoreTextView;
     private TextView[][] cellTextViews = new TextView[4][4];
     private Map<Integer, Integer> colorMap = new HashMap<>();
     private GestureDetector gestureListener;
-    private static final String PREFS_NAME = "game_prefs";
-    private static final String HIGH_SCORE_KEY = "high_score";
     private Button resetButton;
     private Button undoButton;
     private Button homeButton;
@@ -49,11 +42,6 @@ public class MainActivity2048 extends AppCompatActivity {
     private int undosLeft = MAX_UNDOS;
     private Stack<int[][]> gridHistory = new Stack<>();
     private Stack<Integer> scoreHistory = new Stack<>();
-
-
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +54,6 @@ public class MainActivity2048 extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
 
         gestureListener = new GestureDetector(this, new GestureListener(this));
         findViewById(R.id.main).setOnTouchListener((v, event) -> {
@@ -86,13 +73,6 @@ public class MainActivity2048 extends AppCompatActivity {
             startActivity(intent);
         });
 
-
-
-
-        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        highScore = prefs.getInt(HIGH_SCORE_KEY, 0);
-        highScoreTextView.setText(String.valueOf(highScore));
-
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 int resID = getResources().getIdentifier("cell_" + i + "_" + j, "id", getPackageName());
@@ -104,9 +84,19 @@ public class MainActivity2048 extends AppCompatActivity {
         startGame();
         updateUndoButton();
 
+        // Al iniciar, muestra el mejor score de la BD
+        updateHighScoreFromDB();
+    }
+
+    private void updateHighScoreFromDB() {
+        ScoreDBHelper dbHelper = new ScoreDBHelper(this);
+        List<ScoreDBHelper.Score> scores = dbHelper.getScoresByGameOrdered("2048", true);
+        int bestScore = scores.isEmpty() ? 0 : scores.get(0).score;
+        highScoreTextView.setText(String.valueOf(bestScore));
     }
 
     private void startGame() {
+        score = 0;
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 grid[i][j] = 0;
@@ -115,17 +105,16 @@ public class MainActivity2048 extends AppCompatActivity {
         }
         addRandomTile();
         addRandomTile();
+        updateUI();
     }
 
     private void resetGame(){
-        score=0;
+        score = 0;
         startGame();
-        updateUI();
+        updateUndoButton();
         undosLeft = MAX_UNDOS;
         gridHistory.clear();
         scoreHistory.clear();
-        updateUndoButton();
-
     }
 
     private boolean isGameOver() {
@@ -145,7 +134,6 @@ public class MainActivity2048 extends AppCompatActivity {
         return true;
     }
 
-
     private void updateCell(int row, int col) {
         TextView cell = cellTextViews[row][col];
         if (cell == null) return;
@@ -160,12 +148,11 @@ public class MainActivity2048 extends AppCompatActivity {
 
             int color = colorMap.containsKey(value)
                     ? colorMap.get(value)
-                    : ContextCompat.getColor(this, R.color.pink_big); // <-- para > 2048
+                    : ContextCompat.getColor(this, R.color.pink_big);
 
             cell.setBackgroundColor(color);
         }
     }
-
 
     private void addRandomTile() {
         List<int[]> emptyCells = new ArrayList<>();
@@ -194,7 +181,6 @@ public class MainActivity2048 extends AppCompatActivity {
         colorMap.put(512, ContextCompat.getColor(this, R.color.pink_512));
         colorMap.put(1024, ContextCompat.getColor(this, R.color.pink_1024));
         colorMap.put(2048, ContextCompat.getColor(this, R.color.pink_2048));
-
     }
 
     public void moveRight() {
@@ -204,7 +190,7 @@ public class MainActivity2048 extends AppCompatActivity {
         if (moved) {
             addRandomTile();
             updateUI();
-        }else if (!gridHistory.isEmpty()) {
+        } else if (!gridHistory.isEmpty()) {
             gridHistory.pop();
             scoreHistory.pop();
         }
@@ -230,7 +216,7 @@ public class MainActivity2048 extends AppCompatActivity {
         if (moved) {
             addRandomTile();
             updateUI();
-        }else if (!gridHistory.isEmpty()) {
+        } else if (!gridHistory.isEmpty()) {
             gridHistory.pop();
             scoreHistory.pop();
         }
@@ -243,7 +229,7 @@ public class MainActivity2048 extends AppCompatActivity {
         if (moved) {
             addRandomTile();
             updateUI();
-        }else if (!gridHistory.isEmpty()) {
+        } else if (!gridHistory.isEmpty()) {
             gridHistory.pop();
             scoreHistory.pop();
         }
@@ -254,18 +240,8 @@ public class MainActivity2048 extends AppCompatActivity {
             for (int j = 0; j < 4; j++)
                 updateCell(i, j);
         updateUndoButton();
-
-
         scoreTextView.setText(String.valueOf(score));
-        highScoreTextView.setText(String.valueOf(highScore));
-
-        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        int savedHighScore = prefs.getInt(HIGH_SCORE_KEY, 0);
-        if (highScore > savedHighScore) {
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putInt(HIGH_SCORE_KEY, highScore);
-            editor.apply();
-        }
+        updateHighScoreFromDB(); // Actualiza el mejor score en cada movimiento
 
         if (isGameOver()) {
             Toast.makeText(this, "Game Over", Toast.LENGTH_LONG).show();
@@ -297,7 +273,6 @@ public class MainActivity2048 extends AppCompatActivity {
                 currentRow[i] *= 2;
                 currentRow[i - 1] = 0;
                 score += currentRow[i];
-                if (score > highScore) highScore = score;
                 moved = true;
             }
         }
@@ -338,7 +313,6 @@ public class MainActivity2048 extends AppCompatActivity {
                 currentRow[i] *= 2;
                 currentRow[i + 1] = 0;
                 score += currentRow[i];
-                if (score > highScore) highScore = score;
                 moved = true;
             }
         }
@@ -381,7 +355,6 @@ public class MainActivity2048 extends AppCompatActivity {
                 column[i] *= 2;
                 column[i + 1] = 0;
                 score += column[i];
-                if (score > highScore) highScore = score;
                 moved = true;
             }
         }
@@ -426,7 +399,6 @@ public class MainActivity2048 extends AppCompatActivity {
                 column[i] *= 2;
                 column[i - 1] = 0;
                 score += column[i];
-                if (score > highScore) highScore = score;
                 moved = true;
             }
         }
@@ -447,6 +419,7 @@ public class MainActivity2048 extends AppCompatActivity {
 
         return moved;
     }
+
     private void savePreviousState() {
         if (undosLeft <= 0) return;
 
@@ -458,8 +431,6 @@ public class MainActivity2048 extends AppCompatActivity {
         gridHistory.push(copy);
         scoreHistory.push(score);
     }
-
-
 
     private void undoMove() {
         if (undosLeft <= 0 || gridHistory.isEmpty()) {
@@ -476,7 +447,7 @@ public class MainActivity2048 extends AppCompatActivity {
     }
 
     private void updateUndoButton(){
-        undoButton.setEnabled(undosLeft>0);
+        undoButton.setEnabled(undosLeft > 0);
         undoButton.setAlpha(undosLeft > 0 ? 1f : 0.5f);
         undoButton.setText("Step back " + undosLeft + "/" + MAX_UNDOS);
 
@@ -502,11 +473,11 @@ public class MainActivity2048 extends AppCompatActivity {
         }
     }
 
-    private void onGameOver(int score) {
+    private void onGameOver(int finalScore) {
         ScoreDBHelper dbHelper = new ScoreDBHelper(this);
-        dbHelper.addScore("Jugador", score, "2048");
-        Toast.makeText(this, "Game Over! Puntaje: " + score, Toast.LENGTH_SHORT).show();
+        dbHelper.addScore("Jugador", finalScore, "2048");
+        Toast.makeText(this, "Game Over! Puntaje: " + finalScore, Toast.LENGTH_SHORT).show();
+        updateHighScoreFromDB(); // Actualiza para mostrar si es nuevo récord
     }
-
 
 }

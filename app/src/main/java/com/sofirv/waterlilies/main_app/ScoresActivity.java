@@ -6,7 +6,10 @@ import android.view.MenuItem;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.sofirv.waterlilies.R;
+
+
 import java.util.List;
 
 public class ScoresActivity extends AppCompatActivity {
@@ -50,22 +53,8 @@ public class ScoresActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_filter_duck:
-                updateScores("Duck Game", bestFirst);
                 return true;
-            case R.id.action_filter_2048:
-                updateScores("2048", bestFirst);
-                return true;
-            case R.id.action_filter_all:
-                updateScores("Todos", bestFirst);
-                return true;
-            case R.id.action_order_best:
-                bestFirst = true;
-                updateScores(actualGameFilter, bestFirst);
-                return true;
-            case R.id.action_order_worst:
-                bestFirst = false;
-                updateScores(actualGameFilter, bestFirst);
-                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
