@@ -12,7 +12,7 @@ import java.util.List;
 public class ScoreDBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "scores.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 4;
 
     public static final String TABLE_SCORES = "scores";
     public static final String COLUMN_ID = "_id";
@@ -133,5 +133,26 @@ public class ScoreDBHelper extends SQLiteOpenHelper {
         }
         cursor.close();
         return scores;
+    }
+
+    public List<Score> searchScores(String query) {
+        List<Score> results = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String where = COLUMN_PLAYER + " LIKE ? OR " + COLUMN_GAME + " LIKE ?";
+        String[] args = { "%" + query + "%", "%" + query + "%" };
+        Cursor cursor = db.query(TABLE_SCORES, null, where, args, null, null, COLUMN_SCORE + " DESC");
+        if (cursor.moveToFirst()) {
+            do {
+                results.add(new Score(
+                        cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PLAYER)),
+                        cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_SCORE)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_GAME)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE))
+                ));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return results;
     }
 }

@@ -39,7 +39,7 @@ public class LevelSelectActivity extends AppCompatActivity {
         });
 
         // Grid de 3 columnas
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 5);
         rvLevels.setLayoutManager(gridLayoutManager);
 
         LevelAdapter adapter = new LevelAdapter(this, levelManager.getTotalLevels(), progressManager, levelNumber -> {

@@ -2,6 +2,9 @@ package com.sofirv.waterlilies.game2048;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.GestureDetector;
 import android.view.View;
 import android.widget.Button;
@@ -9,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
@@ -18,6 +22,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.sofirv.waterlilies.R;
 import com.sofirv.waterlilies.main_app.HomeActivity;
 import com.sofirv.waterlilies.main_app.ScoreDBHelper;
+import com.sofirv.waterlilies.main_app.Score;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +48,16 @@ public class MainActivity2048 extends AppCompatActivity {
     private Stack<int[][]> gridHistory = new Stack<>();
     private Stack<Integer> scoreHistory = new Stack<>();
 
+    // Timer variables
+    private TextView timerTextView;
+    private boolean isAscendingTimer = true; // Default: ascendente
+    private CountDownTimer countDownTimer;
+    private long timerMillis = 0;
+    private static final long DESCENDING_TIME_MILLIS = 5 * 60 * 1000; // 5 minutos
+    private long startTimeMillis;
+    private Handler timerHandler = new Handler(Looper.getMainLooper());
+    private Runnable timerRunnable;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +78,8 @@ public class MainActivity2048 extends AppCompatActivity {
 
         scoreTextView = findViewById(R.id.score_value);
         highScoreTextView = findViewById(R.id.high_score_value);
+        timerTextView = findViewById(R.id.timer_value);
+
         resetButton = findViewById(R.id.button_reset);
         resetButton.setOnClickListener(v -> resetGame());
         undoButton = findViewById(R.id.button_undo);
@@ -81,7 +98,7 @@ public class MainActivity2048 extends AppCompatActivity {
         }
 
         initColormap();
-        startGame();
+        showTimerChoiceDialog();
         updateUndoButton();
 
         // Al iniciar, muestra el mejor score de la BD
@@ -90,7 +107,7 @@ public class MainActivity2048 extends AppCompatActivity {
 
     private void updateHighScoreFromDB() {
         ScoreDBHelper dbHelper = new ScoreDBHelper(this);
-        List<ScoreDBHelper.Score> scores = dbHelper.getScoresByGameOrdered("2048", true);
+        List<Score> scores = dbHelper.getScoresByGameOrdered("2048", true);
         int bestScore = scores.isEmpty() ? 0 : scores.get(0).score;
         highScoreTextView.setText(String.valueOf(bestScore));
     }
@@ -108,13 +125,28 @@ public class MainActivity2048 extends AppCompatActivity {
         updateUI();
     }
 
-    private void resetGame(){
+    private void resetGame() {
         score = 0;
-        startGame();
-        updateUndoButton();
         undosLeft = MAX_UNDOS;
         gridHistory.clear();
         scoreHistory.clear();
+        stopTimer();
+        // Puedes elegir si quieres preguntar de nuevo el temporizador o reiniciar el mismo tipo:
+        // showTimerChoiceDialog();   // = para elegir de nuevo
+        startGameWithTimer(isAscendingTimer); // = para mantener la elección anterior
+        updateUndoButton();
+    }
+
+    // Detener cualquier timer existente
+    private void stopTimer() {
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+            countDownTimer = null;
+        }
+        if (timerRunnable != null)
+            timerHandler.removeCallbacks(timerRunnable);
+        timerMillis = 0;
+        timerTextView.setText(formatTime(0));
     }
 
     private boolean isGameOver() {
@@ -130,7 +162,9 @@ public class MainActivity2048 extends AppCompatActivity {
                 if (i < 3 && grid[i][j] == grid[i + 1][j]) return false;
             }
         }
+        // GAME OVER: Guarda el score en la BD
         onGameOver(score);
+        stopTimer();
         return true;
     }
 
@@ -145,11 +179,9 @@ public class MainActivity2048 extends AppCompatActivity {
             cell.setBackgroundColor(ContextCompat.getColor(this, R.color.baby_pink));
         } else {
             cell.setText(String.valueOf(value));
-
             int color = colorMap.containsKey(value)
                     ? colorMap.get(value)
                     : ContextCompat.getColor(this, R.color.pink_big);
-
             cell.setBackgroundColor(color);
         }
     }
@@ -241,7 +273,7 @@ public class MainActivity2048 extends AppCompatActivity {
                 updateCell(i, j);
         updateUndoButton();
         scoreTextView.setText(String.valueOf(score));
-        updateHighScoreFromDB(); // Actualiza el mejor score en cada movimiento
+        updateHighScoreFromDB();
 
         if (isGameOver()) {
             Toast.makeText(this, "Game Over", Toast.LENGTH_LONG).show();
@@ -446,11 +478,10 @@ public class MainActivity2048 extends AppCompatActivity {
         updateUndoButton();
     }
 
-    private void updateUndoButton(){
+    private void updateUndoButton() {
         undoButton.setEnabled(undosLeft > 0);
         undoButton.setAlpha(undosLeft > 0 ? 1f : 0.5f);
         undoButton.setText("Step back " + undosLeft + "/" + MAX_UNDOS);
-
     }
 
     private void hideSystemUI() {
@@ -473,11 +504,88 @@ public class MainActivity2048 extends AppCompatActivity {
         }
     }
 
+    // Guarda el score al terminar la partida
     private void onGameOver(int finalScore) {
         ScoreDBHelper dbHelper = new ScoreDBHelper(this);
         dbHelper.addScore("Jugador", finalScore, "2048");
         Toast.makeText(this, "Game Over! Puntaje: " + finalScore, Toast.LENGTH_SHORT).show();
-        updateHighScoreFromDB(); // Actualiza para mostrar si es nuevo récord
+        updateHighScoreFromDB();
     }
 
+    private void showTimerChoiceDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Selecciona tipo de temporizador")
+                .setMessage("¿Quieres un temporizador ascendente o descendente?")
+                .setPositiveButton("Ascendente", (dialog, which) -> {
+                    startGameWithTimer(true); // true = ascendente
+                })
+                .setNegativeButton("Descendente", (dialog, which) -> {
+                    startGameWithTimer(false); // false = descendente
+                })
+                .setCancelable(false)
+                .show();
+    }
+
+    private void startGameWithTimer(boolean ascending) {
+        isAscendingTimer = ascending;
+        stopTimer(); // Por si venías de otra partida/tipo
+        if (isAscendingTimer) {
+            startAscendingTimer();
+        } else {
+            startDescendingTimer();
+        }
+        startGame();
+    }
+
+    private void startAscendingTimer() {
+        startTimeMillis = System.currentTimeMillis();
+        timerRunnable = new Runnable() {
+            @Override
+            public void run() {
+                timerMillis = System.currentTimeMillis() - startTimeMillis;
+                timerTextView.setText(formatTime(timerMillis));
+                timerHandler.postDelayed(this, 1000);
+            }
+        };
+        timerHandler.post(timerRunnable);
+    }
+
+    private void startDescendingTimer() {
+        countDownTimer = new CountDownTimer(DESCENDING_TIME_MILLIS, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                timerMillis = millisUntilFinished;
+                timerTextView.setText(formatTime(timerMillis));
+            }
+
+            @Override
+            public void onFinish() {
+                timerTextView.setText("00:00");
+                endGameDueToTimeout();
+            }
+        };
+        countDownTimer.start();
+    }
+
+    private void endGameDueToTimeout() {
+        stopTimer();
+        new AlertDialog.Builder(this)
+                .setTitle("Fin del juego")
+                .setMessage("El tiempo se ha agotado. ¿Quieres volver a intentar?")
+                .setPositiveButton("Reiniciar", (dialog, which) -> resetGame())
+                .setNegativeButton("Salir", (dialog, which) -> finish())
+                .show();
+    }
+
+    private String formatTime(long millis) {
+        int seconds = (int) (millis / 1000) % 60;
+        int minutes = (int) ((millis / (1000 * 60)) % 60);
+        return String.format("%02d:%02d", minutes, seconds);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopTimer();
+    }
 }

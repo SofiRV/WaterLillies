@@ -7,4 +7,5 @@
     <string name="high_score_value">0</string>
     <string name="reset">Reset</string>
     <string name="step_back">Step back</string>
+    <string name="timer">Timer</string>
 </resources>

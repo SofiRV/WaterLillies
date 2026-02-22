@@ -12,7 +12,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
-
 import androidx.core.content.res.ResourcesCompat;
 
 import com.sofirv.waterlilies.R;
@@ -37,6 +36,8 @@ public class GameView extends View {
 
     private float startX, startY;
     private static final int MIN_SWIPE_DISTANCE = 50;
+
+    private boolean scoreGuardado = false;
 
     public GameView(Context context) {
         super(context);
@@ -116,11 +117,13 @@ public class GameView extends View {
     }
 
     public void restartLevel() {
+        scoreGuardado = false;
         loadCurrentLevel();
         Toast.makeText(getContext(), "Nivel reiniciado", Toast.LENGTH_SHORT).show();
     }
 
     public void goToNextLevel() {
+        scoreGuardado = false;
         if (levelManager.hasNextLevel()) {
             levelManager.nextLevel();
             loadCurrentLevel();
@@ -156,8 +159,7 @@ public class GameView extends View {
 
         // Dibujar fondo de agua
         if (backgroundBitmap != null) {
-            canvas.drawBitmap(backgroundBitmap, null,
-                    new Rect(0, 0, getWidth(), getHeight()), paint);
+            canvas.drawBitmap(backgroundBitmap, null, new Rect(0, 0, getWidth(), getHeight()), paint);
         } else {
             canvas.drawColor(Color.parseColor("#87CEEB")); // fallback
         }
@@ -174,6 +176,7 @@ public class GameView extends View {
 
         if (gameBoard.isDead()) {
             drawGameOver(canvas);
+            // No guardar score aquí
         }
     }
 
@@ -183,11 +186,9 @@ public class GameView extends View {
 
         switch (tile.getType()) {
             case LILY_PAD:
-                // Escala grande pero centrada
-                float scale = 1.15f + (float)Math.random() * 0.05f; // 115-120%
+                float scale = 1.15f + (float)Math.random() * 0.05f;
                 float lilyWidth = tileSize * scale;
                 float lilyHeight = tileSize * scale;
-                // Centrar correctamente
                 float lilyX = left + (tileSize - lilyWidth) / 2f;
                 float lilyY = top + (tileSize - lilyHeight) / 2f;
 
@@ -212,7 +213,6 @@ public class GameView extends View {
             case WATER:
             case SHORE:
             case BREAD:
-                // No dibujar nada extra
                 break;
         }
     }
@@ -222,8 +222,7 @@ public class GameView extends View {
         float x = offsetX + duck.getCol() * tileSize;
         float y = offsetY + duck.getRow() * tileSize;
 
-        // Tamaño grande pero centrado
-        float duckSize = tileSize * 1.8f; // algo más equilibrado que 1.9
+        float duckSize = tileSize * 1.8f;
         float duckX = x + (tileSize - duckSize) / 2f;
         float duckY = y + (tileSize - duckSize) / 2f;
 
@@ -258,29 +257,23 @@ public class GameView extends View {
         }
     }
 
-
     private void drawLevelInfo(Canvas canvas) {
         String levelText = "Nivel " + levelManager.getCurrentLevelNumber() + "/" + levelManager.getTotalLevels();
         String progressText = gameBoard.getLilyPadsVisited() + "/" + gameBoard.getTotalLilyPads();
-
         canvas.drawText(levelText, 20, 45, textPaint);
         canvas.drawText(progressText, 20, 85, textPaint);
     }
 
     private void drawGameOver(Canvas canvas) {
-        // Oscurecer fondo usando el bitmap de agua como base
         if (backgroundBitmap != null) {
-            paint.setAlpha(180); // semitransparente
-            canvas.drawBitmap(backgroundBitmap, null,
-                    new Rect(0, 0, getWidth(), getHeight()), paint);
-            paint.setAlpha(255); // reset alpha
+            paint.setAlpha(180);
+            canvas.drawBitmap(backgroundBitmap, null, new Rect(0, 0, getWidth(), getHeight()), paint);
+            paint.setAlpha(255);
         } else {
-            // fallback
             paint.setColor(Color.argb(200, 0, 0, 0));
             canvas.drawRect(0, 0, getWidth(), getHeight(), paint);
         }
 
-        // Texto principal "GAME OVER"
         Paint gameOverPaint = new Paint();
         gameOverPaint.setAntiAlias(true);
         gameOverPaint.setColor(Color.parseColor("#FFC0CB"));
@@ -291,23 +284,21 @@ public class GameView extends View {
         Typeface cuteFont = ResourcesCompat.getFont(getContext(), R.font.press_start_2_p);
         gameOverPaint.setTypeface(cuteFont);
 
-        canvas.drawText("GAME OVER", getWidth()/2, getHeight()/2 - 60, gameOverPaint);
+        canvas.drawText("GAME OVER", getWidth() / 2, getHeight() / 2 - 60, gameOverPaint);
 
-        // Emoji o icono de patito muerto
         Paint emojiPaint = new Paint();
         emojiPaint.setTextSize(60);
         emojiPaint.setTextAlign(Paint.Align.CENTER);
-        canvas.drawText("💀", getWidth()/2, getHeight()/2, emojiPaint);
+        canvas.drawText("💀", getWidth() / 2, getHeight() / 2, emojiPaint);
 
-        // Subtítulo
         Paint subtitlePaint = new Paint();
         subtitlePaint.setAntiAlias(true);
         subtitlePaint.setColor(Color.WHITE);
         subtitlePaint.setTextSize(40);
         subtitlePaint.setTextAlign(Paint.Align.CENTER);
         subtitlePaint.setShadowLayer(4, 0, 0, Color.BLACK);
-        canvas.drawText("¡Sin movimientos posibles!", getWidth()/2, getHeight()/2 + 60, subtitlePaint);
-        canvas.drawText("Presiona 🔄 para reintentar", getWidth()/2, getHeight()/2 + 110, subtitlePaint);
+        canvas.drawText("¡Sin movimientos posibles!", getWidth() / 2, getHeight() / 2 + 60, subtitlePaint);
+        canvas.drawText("Presiona 🔄 para reintentar", getWidth() / 2, getHeight() / 2 + 110, subtitlePaint);
     }
 
     @Override
@@ -348,6 +339,10 @@ public class GameView extends View {
             invalidate();
             if (gameBoard.isDead()) {
                 postDelayed(() -> Toast.makeText(getContext(), "¡Has muerto! 💀", Toast.LENGTH_LONG).show(), 100);
+                if (!scoreGuardado) {
+                    guardarScore("Jugador", calcularScorePorMuerte());
+                    scoreGuardado = true;
+                }
             }
             if (gameBoard.isLevelComplete()) handleLevelComplete();
         }
@@ -375,10 +370,20 @@ public class GameView extends View {
         Toast.makeText(getContext(),
                 "¡Juego completado! 🎉\nEstrellas totales: " + totalStars + "/15",
                 Toast.LENGTH_LONG).show();
-        int score= totalStars*100;
+
+        int score = totalStars * 100;
+        if (!scoreGuardado) {
+            guardarScore("Jugador", score);
+            scoreGuardado = true;
+        }
+    }
+
+    private void guardarScore(String player, int score) {
         ScoreDBHelper dbHelper = new ScoreDBHelper(getContext());
-        String player = "Jugador"; // Puedes pedirlo en un dialog
-        Toast.makeText(getContext(), "¡Ganaste! Puntaje: " + score, Toast.LENGTH_SHORT).show();
-        dbHelper.addScore(player, score, "Duck Game");
+        dbHelper.addScore(player, score, "Water Lilies");
+    }
+
+    private int calcularScorePorMuerte() {
+        return gameBoard.getLilyPadsVisited() * 10;
     }
 }

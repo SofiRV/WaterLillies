@@ -167,7 +167,7 @@ public class GameBoard {
     }
 
     public boolean isPerfectCompletion() {
-        return isLevelComplete() && lilyPadsVisited == totalLilyPads;
+        return isLevelComplete() && lilyPadsVisited == totalLilyPads-1;
     }
 
     public boolean isDead() {

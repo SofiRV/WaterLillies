@@ -5,7 +5,7 @@ import android.content.Context;
 import com.sofirv.waterlilies.R;
 
 public class LevelManager {
-    private static final int TOTAL_LEVELS = 5;
+    private static final int TOTAL_LEVELS = 10;
     private int currentLevelNumber;
     private Context context;
     private ProgressManager progressManager;
@@ -34,6 +34,11 @@ public class LevelManager {
             case 3: return R.xml.level_3;
             case 4: return R.xml.level_4;
             case 5: return R. xml.level_5;
+            case 6: return R.xml.level_6;
+            case 7: return R.xml.level_7;
+            case 8: return R.xml.level_8;
+            case 9: return R.xml.level_9;
+            case 10: return R.xml.level_10;
             default: return R.xml.level_1;
         }
     }

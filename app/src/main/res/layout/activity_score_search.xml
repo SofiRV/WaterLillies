@@ -1,15 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="0dp"
-    android:orientation="vertical"
     android:background="@color/baby_pink">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="SCORES"
+        android:text="SEARCH SCORES"
         android:gravity="start"
         android:background="@color/pink_8"
         android:textStyle="bold"
@@ -21,21 +19,24 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"/>
 
+    <EditText
+        android:id="@+id/search_query"
+        android:hint="Search by player name or game name..."
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <Button
-        android:id="@+id/button_search_scores"
+        android:id="@+id/search_button"
+        android:text="Search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Search Score"
-        android:layout_gravity="end"
-        android:layout_marginBottom="6dp"
-        android:layout_marginRight="12dp"
+        android:backgroundTint="@color/pink_16"
         android:textColor="@color/black"
-        android:backgroundTint="@color/pink_16"/>
-
+        android:layout_marginBottom="10dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_scores"
+        android:id="@+id/search_results"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="40dp"/>
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 </LinearLayout>
