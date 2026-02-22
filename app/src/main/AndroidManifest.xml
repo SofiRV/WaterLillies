@@ -1,44 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.sofirv.waterlillies">
+    package="waterlilies">
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_water_lilies"
         android:supportsRtl="true"
         android:theme="@style/Theme.WaterLillies"
         tools:targetApi="31">
 
-        <activity
-            android:name=".duckgame.SplashActivity"
-            android:exported="true"
-            android:screenOrientation="landscape">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            <activity
+                android:name="com.sofirv.waterlilies.HomeActivity"
+                android:exported="true"
+                android:screenOrientation="portrait">
+                <intent-filter>
+                    <action android:name="android.intent.action.MAIN" />
+                    <category android:name="android.intent.category.LAUNCHER" />
+                </intent-filter>
+            </activity>
 
-        <activity
-            android:name=".duckgame.MenuActivity"
-            android:exported="false"
-            android:screenOrientation="landscape" />
-        <activity
-            android:name=".duckgame.GameActivity"
-            android:exported="false"
-            android:screenOrientation="landscape" />
-        <activity
-            android:name=".duckgame.LevelSelectActivity"
-            android:exported="false"
-            android:screenOrientation="landscape" />
-        <activity
-            android:name=".game2048.MainActivity2048"
-            android:exported="false"
-            android:screenOrientation="portrait" />
+            <!-- Splash se queda pero SIN launcher -->
+            <activity
+                android:name="com.sofirv.waterlilies.duckgame.SplashActivity"
+                android:exported="true"
+                android:screenOrientation="landscape" />
 
+            <activity
+                android:name="com.sofirv.waterlilies.duckgame.MenuActivity"
+                android:exported="false"
+                android:screenOrientation="landscape" />
+            <activity
+                android:name="com.sofirv.waterlilies.duckgame.GameActivity"
+                android:exported="false"
+                android:screenOrientation="landscape" />
+            <activity
+                android:name="com.sofirv.waterlilies.duckgame.LevelSelectActivity"
+                android:exported="false"
+                android:screenOrientation="landscape" />
+            <activity
+                android:name="com.sofirv.waterlilies.game2048.MainActivity2048"
+                android:exported="false"
+                android:screenOrientation="portrait" />
+
+            <!-- Aquí iría la actividad de Scores cuando la crees -->
+            <activity
+                android:name="com.sofirv.waterlilies.duckgame.ScoresActivity"
+                android:exported="false"
+                android:screenOrientation="portrait" />
     </application>
 
 </manifest>

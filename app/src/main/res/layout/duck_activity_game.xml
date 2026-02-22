@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:background="#66000000" />
 
-    <com.sofirv.waterlillies.duckgame.GameView
+    <waterlilies.duckgame.GameView
         android:id="@+id/game_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

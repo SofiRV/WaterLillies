@@ -1,4 +1,4 @@
-package com.sofirv.waterlillies.duckgame;
+package com.sofirv.waterlilies.duckgame;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,7 +7,7 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.sofirv.waterlillies.R;
+import com.sofirv.waterlilies.R;
 
 public class SplashActivity extends AppCompatActivity {
 

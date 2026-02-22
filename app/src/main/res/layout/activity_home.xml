@@ -1,0 +1,29 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="32dp">
+
+    <ImageButton
+        android:id="@+id/button_scores"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_scores"
+        android:contentDescription="scores" />
+
+    <ImageButton
+        android:id="@+id/button_2048"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_2048"
+        android:contentDescription="game 2048" />
+
+    <ImageButton
+        android:id="@+id/button_duckgame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_water_lilies"
+        android:contentDescription="water lilies" />
+</LinearLayout>

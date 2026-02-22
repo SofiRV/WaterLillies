@@ -1,4 +1,4 @@
-package com.sofirv.waterlillies;
+package com.sofirv.waterlilies;
 
 import org.junit.Test;
 

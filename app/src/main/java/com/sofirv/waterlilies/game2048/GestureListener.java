@@ -1,16 +1,15 @@
-package com.sofirv.waterlillies.game2048;
+package com.sofirv.waterlilies.game2048;
 
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.widget.Toast;
 
 public class GestureListener extends GestureDetector.SimpleOnGestureListener {
     private static final int SWIPE_THRESHOLD = 100;
     private static final int SWIPE_VELOCITY_THRESHOLD = 100;
-    private MainActivity activity;
+    private MainActivity2048 activity;
 
 
-    public GestureListener(MainActivity activity){
+    public GestureListener(MainActivity2048 activity){
         this.activity = activity;
     }
 

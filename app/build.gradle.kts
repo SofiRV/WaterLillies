@@ -3,13 +3,13 @@ plugins {
 }
 
 android {
-    namespace = "com.sofirv.waterlillies"
+    namespace = "com.sofirv.waterlilies"
     compileSdk {
         version = release(36)
     }
 
     defaultConfig {
-        applicationId = "com.sofirv.waterlillies"
+        applicationId = "com.sofirv.waterlilies"
         minSdk = 24
         targetSdk = 36
         versionCode = 1

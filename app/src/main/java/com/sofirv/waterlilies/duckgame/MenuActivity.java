@@ -1,4 +1,4 @@
-package com.sofirv.waterlillies.duckgame;
+package com.sofirv.waterlilies.duckgame;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
@@ -8,7 +8,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 
-import com.sofirv.waterlillies.R;
+import com.sofirv.waterlilies.R;
 
 public class MenuActivity extends AppCompatActivity {
 

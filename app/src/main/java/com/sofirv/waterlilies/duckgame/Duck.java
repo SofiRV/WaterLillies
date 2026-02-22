@@ -1,4 +1,4 @@
-package com.sofirv.waterlillies.duckgame;
+package com.sofirv.waterlilies.duckgame;
 
 public class Duck {
     private int row;

@@ -1,4 +1,4 @@
-package com.sofirv.waterlillies;
+package com.sofirv.waterlilies;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.sofirv.waterlillies", appContext.getPackageName());
+        assertEquals("com.sofirv.waterlilies", appContext.getPackageName());
     }
 }

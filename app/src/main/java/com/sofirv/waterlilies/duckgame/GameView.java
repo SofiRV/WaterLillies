@@ -1,4 +1,4 @@
-package com.sofirv.waterlillies.duckgame;
+package com.sofirv.waterlilies.duckgame;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -15,7 +15,8 @@ import android.widget.Toast;
 
 import androidx.core.content.res.ResourcesCompat;
 
-import com.sofirv.waterlillies.R;
+import com.sofirv.waterlilies.R;
+import com.sofirv.waterlilies.ScoreDBHelper;
 
 public class GameView extends View {
     private GameBoard gameBoard;

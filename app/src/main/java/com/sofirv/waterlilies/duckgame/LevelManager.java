@@ -1,8 +1,8 @@
-package com.sofirv.waterlillies.duckgame;
+package com.sofirv.waterlilies.duckgame;
 
 import android.content.Context;
 
-import com.sofirv.waterlillies.R;
+import com.sofirv.waterlilies.R;
 
 public class LevelManager {
     private static final int TOTAL_LEVELS = 5;

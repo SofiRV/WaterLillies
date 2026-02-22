@@ -1,4 +1,4 @@
-package com.sofirv.waterlillies.duckgame;
+package com.sofirv.waterlilies;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
