@@ -1,4 +1,4 @@
-package com.sofirv.waterlilies.duckgame;
+package com.sofirv.waterlilies.main_app;
 
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
@@ -6,7 +6,6 @@ import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.sofirv.waterlilies.R;
-import com.sofirv.waterlilies.ScoreDBHelper;
 
 import java.util.List;
 

@@ -1,11 +1,11 @@
-package com.sofirv.waterlilies;
+package com.sofirv.waterlilies.main_app;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.sofirv.waterlilies.duckgame.ScoresActivity;
+import com.sofirv.waterlilies.R;
 
 public class HomeActivity extends AppCompatActivity {
     @Override

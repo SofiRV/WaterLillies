@@ -1,4 +1,4 @@
-package com.sofirv.waterlilies;
+package com.sofirv.waterlilies.main_app;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

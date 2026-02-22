@@ -16,7 +16,7 @@ import android.widget.Toast;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.sofirv.waterlilies.R;
-import com.sofirv.waterlilies.ScoreDBHelper;
+import com.sofirv.waterlilies.main_app.ScoreDBHelper;
 
 public class GameView extends View {
     private GameBoard gameBoard;
