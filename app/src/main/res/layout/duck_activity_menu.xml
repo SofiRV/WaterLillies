@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
-            android:weightSum="3">
+            android:weightSum="4">
 
             <ImageButton
                 android:id="@+id/btnPlay"
@@ -78,6 +78,19 @@
                 android:background="@android:color/transparent"
                 android:src="@drawable/duck_lily_pad_levels"
                 android:contentDescription="Niveles"
+                android:layout_margin="8dp"/>
+
+            <ImageButton
+                android:id="@+id/btn_home"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:maxHeight="200dp"
+                android:scaleType="fitCenter"
+                android:background="@android:color/transparent"
+                android:src="@drawable/duck_home"
+                android:contentDescription="Home"
                 android:layout_margin="8dp"/>
 
         </LinearLayout>

@@ -24,7 +24,7 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(new Intent(this, com.sofirv.waterlilies.game2048.MainActivity2048.class))
         );
         btnDuck.setOnClickListener(view ->
-                startActivity(new Intent(this, com.sofirv.waterlilies.duckgame.MenuActivity.class))
+                startActivity(new Intent(this, com.sofirv.waterlilies.duckgame.SplashActivity.class))
         );
     }
 }

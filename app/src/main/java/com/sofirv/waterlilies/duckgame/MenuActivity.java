@@ -9,6 +9,7 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 
 import com.sofirv.waterlilies.R;
+import com.sofirv.waterlilies.main_app.HomeActivity;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -18,6 +19,8 @@ public class MenuActivity extends AppCompatActivity {
     private ImageButton btnPlay;
     private ImageButton btnContinue;
     private ImageButton btnLevels;
+    private ImageButton btnHome;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +47,8 @@ public class MenuActivity extends AppCompatActivity {
         btnPlay = findViewById(R.id.btnPlay);
         btnContinue = findViewById(R.id.btnContinue);
         btnLevels = findViewById(R.id.btnLevels);
+        btnHome = findViewById(R.id.btn_home);
+
 
         // Configurar clicks
         btnPlay.setOnClickListener(v -> {
@@ -57,6 +62,12 @@ public class MenuActivity extends AppCompatActivity {
             Intent intent = new Intent(MenuActivity.this, LevelSelectActivity.class);
             startActivity(intent);
         });
+
+        btnHome.setOnClickListener(v -> {
+            Intent intent = new Intent(MenuActivity.this, HomeActivity.class);
+            startActivity(intent);
+        });
+
 
         // Actualizar visibilidad de continuar según progreso
         updateContinueButton();

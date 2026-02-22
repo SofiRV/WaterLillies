@@ -4,26 +4,61 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="32dp">
+    android:background="@color/baby_pink">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="HOME"
+        android:gravity="start"
+        android:background="@color/pink_8"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:textColor="@color/black"
+        android:layout_marginBottom="10dp"
+        android:paddingTop="40dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textAlignment="center"/>
 
     <ImageButton
         android:id="@+id/button_scores"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:adjustViewBounds="true"
+        android:maxHeight="200dp"
+        android:scaleType="fitCenter"
+        android:background="@android:color/transparent"
         android:src="@drawable/ic_scores"
-        android:contentDescription="scores" />
-
-    <ImageButton
-        android:id="@+id/button_2048"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_2048"
-        android:contentDescription="game 2048" />
+        android:contentDescription="scores"
+        android:layout_margin="8dp"/>
 
     <ImageButton
         android:id="@+id/button_duckgame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:adjustViewBounds="true"
+        android:maxHeight="200dp"
+        android:scaleType="fitCenter"
+        android:background="@android:color/transparent"
         android:src="@drawable/ic_water_lilies"
-        android:contentDescription="water lilies" />
+        android:contentDescription="water lilies"
+        android:layout_margin="8dp"/>
+
+    <ImageButton
+        android:id="@+id/button_2048"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:adjustViewBounds="true"
+        android:maxHeight="200dp"
+        android:scaleType="fitCenter"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_2048"
+        android:contentDescription="game 2048"
+        android:layout_margin="8dp"/>
+
 </LinearLayout>

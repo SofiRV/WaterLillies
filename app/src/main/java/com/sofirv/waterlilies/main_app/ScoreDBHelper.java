@@ -6,6 +6,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ScoreDBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "scores.db";
@@ -60,5 +63,20 @@ public class ScoreDBHelper extends SQLiteOpenHelper {
                 null,
                 COLUMN_SCORE + " DESC",
                 String.valueOf(limit));
+    }
+
+    public List<String> getAllScoresAsStrings() {
+        List<String> scores = new ArrayList<>();
+        Cursor cursor = getTopScores(50); // O el limite que prefieras
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                String player = cursor.getString(cursor.getColumnIndex(COLUMN_PLAYER));
+                int score = cursor.getInt(cursor.getColumnIndex(COLUMN_SCORE));
+                String date = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
+                scores.add(player + " - " + score + " (" + date + ")");
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+        return scores;
     }
 }
