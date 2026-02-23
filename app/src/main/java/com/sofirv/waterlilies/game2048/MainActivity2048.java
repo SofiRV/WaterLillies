@@ -31,6 +31,10 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Stack;
 
+/**
+ * Main activity for the 2048 game.
+ * Manages game grid, UI, score, timer, undo, and persistence.
+ */
 public class MainActivity2048 extends AppCompatActivity {
 
     int[][] grid = new int[4][4];
@@ -47,13 +51,11 @@ public class MainActivity2048 extends AppCompatActivity {
     private int undosLeft = MAX_UNDOS;
     private Stack<int[][]> gridHistory = new Stack<>();
     private Stack<Integer> scoreHistory = new Stack<>();
-
-    // Timer variables
     private TextView timerTextView;
-    private boolean isAscendingTimer = true; // Default: ascendente
+    private boolean isAscendingTimer = true; // Default: ascending
     private CountDownTimer countDownTimer;
     private long timerMillis = 0;
-    private static final long DESCENDING_TIME_MILLIS = 5 * 60 * 1000; // 5 minutos
+    private static final long DESCENDING_TIME_MILLIS = 5 * 60 * 1000; // 5 minutes
     private long startTimeMillis;
     private Handler timerHandler = new Handler(Looper.getMainLooper());
     private Runnable timerRunnable;
@@ -100,8 +102,7 @@ public class MainActivity2048 extends AppCompatActivity {
         initColormap();
         showTimerChoiceDialog();
         updateUndoButton();
-
-        // Al iniciar, muestra el mejor score de la BD
+        // On start show best score from DB
         updateHighScoreFromDB();
     }
 
@@ -131,13 +132,13 @@ public class MainActivity2048 extends AppCompatActivity {
         gridHistory.clear();
         scoreHistory.clear();
         stopTimer();
-        // Puedes elegir si quieres preguntar de nuevo el temporizador o reiniciar el mismo tipo:
-        // showTimerChoiceDialog();   // = para elegir de nuevo
-        startGameWithTimer(isAscendingTimer); // = para mantener la elección anterior
+        startGameWithTimer(isAscendingTimer); // keep previous timer type, or call showTimerChoiceDialog() to ask again
         updateUndoButton();
     }
 
-    // Detener cualquier timer existente
+    /**
+     * Stop any running timer (ascending or descending)
+     */
     private void stopTimer() {
         if (countDownTimer != null) {
             countDownTimer.cancel();
@@ -162,7 +163,7 @@ public class MainActivity2048 extends AppCompatActivity {
                 if (i < 3 && grid[i][j] == grid[i + 1][j]) return false;
             }
         }
-        // GAME OVER: Guarda el score en la BD
+        // GAME OVER: Save the score in the DB
         onGameOver(score);
         stopTimer();
         return true;
@@ -276,7 +277,6 @@ public class MainActivity2048 extends AppCompatActivity {
         updateHighScoreFromDB();
 
         if (isGameOver()) {
-            Toast.makeText(this, "Game Over", Toast.LENGTH_LONG).show();
             undosLeft = MAX_UNDOS;
             gridHistory.clear();
             scoreHistory.clear();
@@ -466,7 +466,7 @@ public class MainActivity2048 extends AppCompatActivity {
 
     private void undoMove() {
         if (undosLeft <= 0 || gridHistory.isEmpty()) {
-            Toast.makeText(this, "No quedan undos", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "No more undos left", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -504,23 +504,23 @@ public class MainActivity2048 extends AppCompatActivity {
         }
     }
 
-    // Guarda el score al terminar la partida
+    // Save the score in the DB when the game ends
     private void onGameOver(int finalScore) {
         ScoreDBHelper dbHelper = new ScoreDBHelper(this);
-        dbHelper.addScore("Jugador", finalScore, "2048");
-        Toast.makeText(this, "Game Over! Puntaje: " + finalScore, Toast.LENGTH_SHORT).show();
+        dbHelper.addScore("Player", finalScore, "2048");
+        Toast.makeText(this, "Game Over! Score: " + finalScore, Toast.LENGTH_SHORT).show();
         updateHighScoreFromDB();
     }
 
     private void showTimerChoiceDialog() {
         new AlertDialog.Builder(this)
-                .setTitle("Selecciona tipo de temporizador")
-                .setMessage("¿Quieres un temporizador ascendente o descendente?")
-                .setPositiveButton("Ascendente", (dialog, which) -> {
-                    startGameWithTimer(true); // true = ascendente
+                .setTitle("Select timer type")
+                .setMessage("Do you want an ascending or descending timer?")
+                .setPositiveButton("Ascending", (dialog, which) -> {
+                    startGameWithTimer(true);
                 })
-                .setNegativeButton("Descendente", (dialog, which) -> {
-                    startGameWithTimer(false); // false = descendente
+                .setNegativeButton("Descending", (dialog, which) -> {
+                    startGameWithTimer(false);
                 })
                 .setCancelable(false)
                 .show();
@@ -528,7 +528,7 @@ public class MainActivity2048 extends AppCompatActivity {
 
     private void startGameWithTimer(boolean ascending) {
         isAscendingTimer = ascending;
-        stopTimer(); // Por si venías de otra partida/tipo
+        stopTimer(); // In case a timer from a previous game/type exists
         if (isAscendingTimer) {
             startAscendingTimer();
         } else {
@@ -570,10 +570,10 @@ public class MainActivity2048 extends AppCompatActivity {
     private void endGameDueToTimeout() {
         stopTimer();
         new AlertDialog.Builder(this)
-                .setTitle("Fin del juego")
-                .setMessage("El tiempo se ha agotado. ¿Quieres volver a intentar?")
-                .setPositiveButton("Reiniciar", (dialog, which) -> resetGame())
-                .setNegativeButton("Salir", (dialog, which) -> finish())
+                .setTitle("Game over")
+                .setMessage("Time's up! Would you like to try again?")
+                .setPositiveButton("Restart", (dialog, which) -> resetGame())
+                .setNegativeButton("Exit", (dialog, which) -> finish())
                 .show();
     }
 

@@ -7,7 +7,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="SEARCH SCORES"
+        android:text="@string/search_scores"
         android:gravity="start"
         android:background="@color/pink_8"
         android:textStyle="bold"
@@ -21,13 +21,13 @@
 
     <EditText
         android:id="@+id/search_query"
-        android:hint="Search by player name or game name..."
+        android:hint="@string/search_by_player_name_or_game_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <Button
         android:id="@+id/search_button"
-        android:text="Search"
+        android:text="@string/search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/pink_16"

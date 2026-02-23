@@ -6,7 +6,7 @@
     tools:context="com.sofirv.waterlilies.main_app.ScoresActivity">
     <item
         android:id="@+id/action_search"
-        android:title="Search..."
+        android:title="@string/search_menu"
         android:orderInCategory="1"
         app:showAsAction="never" />
 </menu>

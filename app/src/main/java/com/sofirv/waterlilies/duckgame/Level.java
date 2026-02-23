@@ -1,5 +1,8 @@
 package com.sofirv.waterlilies.duckgame;
 
+/**
+ * Represents a game level configuration, including the board layout and object positions.
+ */
 public class Level {
     private int levelNumber;
     private int rows;
@@ -34,6 +37,10 @@ public class Level {
         return layout;
     }
 
+    /**
+     * Sets the grid layout for the level.
+     * After layout is set, total number of lily pads is calculated.
+     */
     public void setLayout(int[][] layout) {
         this.layout = layout;
         calculateTotalLilyPads();
@@ -75,6 +82,9 @@ public class Level {
         return totalLilyPads;
     }
 
+    /**
+     * Counts all lily pad tiles in the layout; should be called whenever layout changes.
+     */
     private void calculateTotalLilyPads() {
         totalLilyPads = 0;
         for (int r = 0; r < rows; r++) {

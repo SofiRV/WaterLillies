@@ -26,18 +26,16 @@ public class GameView extends View {
     private Paint textPaint;
     private float tileSize;
     private float offsetX, offsetY;
-
-    // Imágenes
     private Bitmap duckBitmap;
     private Bitmap duckDeadBitmap;
     private Bitmap breadBitmap;
     private Bitmap lilyPadBitmap;
-    private Bitmap backgroundBitmap; // Fondo de agua
+    private Bitmap backgroundBitmap;
 
     private float startX, startY;
     private static final int MIN_SWIPE_DISTANCE = 50;
 
-    private boolean scoreGuardado = false;
+    private boolean scoreSaved = false;
 
     public GameView(Context context) {
         super(context);
@@ -81,7 +79,6 @@ public class GameView extends View {
     private void loadImages(Context context) {
         try {
             duckBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.duck);
-
             try {
                 duckDeadBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.duck_dead_duck);
             } catch (Exception e) {
@@ -104,7 +101,7 @@ public class GameView extends View {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, "Error cargando imágenes", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Error loading images", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -117,23 +114,23 @@ public class GameView extends View {
     }
 
     public void restartLevel() {
-        scoreGuardado = false;
+        scoreSaved = false;
         loadCurrentLevel();
-        Toast.makeText(getContext(), "Nivel reiniciado", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Level restarted", Toast.LENGTH_SHORT).show();
     }
 
     public void goToNextLevel() {
-        scoreGuardado = false;
+        scoreSaved = false;
         if (levelManager.hasNextLevel()) {
             levelManager.nextLevel();
             loadCurrentLevel();
             calculateTileSize(getWidth(), getHeight());
             Toast.makeText(getContext(),
-                    "Nivel " + levelManager.getCurrentLevelNumber(),
+                    "Level " + levelManager.getCurrentLevelNumber(),
                     Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getContext(),
-                    "Ya estás en el último nivel",
+                    "You are at the last level",
                     Toast.LENGTH_SHORT).show();
         }
     }
@@ -157,14 +154,12 @@ public class GameView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        // Dibujar fondo de agua
         if (backgroundBitmap != null) {
             canvas.drawBitmap(backgroundBitmap, null, new Rect(0, 0, getWidth(), getHeight()), paint);
         } else {
             canvas.drawColor(Color.parseColor("#87CEEB")); // fallback
         }
 
-        // Dibujar tiles (solo nenúfares)
         for (int r = 0; r < gameBoard.getRows(); r++) {
             for (int c = 0; c < gameBoard.getCols(); c++) {
                 drawTile(canvas, gameBoard.getTile(r, c), r, c);
@@ -176,7 +171,6 @@ public class GameView extends View {
 
         if (gameBoard.isDead()) {
             drawGameOver(canvas);
-            // No guardar score aquí
         }
     }
 
@@ -258,7 +252,7 @@ public class GameView extends View {
     }
 
     private void drawLevelInfo(Canvas canvas) {
-        String levelText = "Nivel " + levelManager.getCurrentLevelNumber() + "/" + levelManager.getTotalLevels();
+        String levelText = "Level " + levelManager.getCurrentLevelNumber() + "/" + levelManager.getTotalLevels();
         String progressText = gameBoard.getLilyPadsVisited() + "/" + gameBoard.getTotalLilyPads();
         canvas.drawText(levelText, 20, 45, textPaint);
         canvas.drawText(progressText, 20, 85, textPaint);
@@ -297,8 +291,8 @@ public class GameView extends View {
         subtitlePaint.setTextSize(40);
         subtitlePaint.setTextAlign(Paint.Align.CENTER);
         subtitlePaint.setShadowLayer(4, 0, 0, Color.BLACK);
-        canvas.drawText("¡Sin movimientos posibles!", getWidth() / 2, getHeight() / 2 + 60, subtitlePaint);
-        canvas.drawText("Presiona 🔄 para reintentar", getWidth() / 2, getHeight() / 2 + 110, subtitlePaint);
+        canvas.drawText("No moves left!", getWidth() / 2, getHeight() / 2 + 60, subtitlePaint);
+        canvas.drawText("Press 🔄 to retry", getWidth() / 2, getHeight() / 2 + 110, subtitlePaint);
     }
 
     @Override
@@ -338,10 +332,10 @@ public class GameView extends View {
         if (moved) {
             invalidate();
             if (gameBoard.isDead()) {
-                postDelayed(() -> Toast.makeText(getContext(), "¡Has muerto! 💀", Toast.LENGTH_LONG).show(), 100);
-                if (!scoreGuardado) {
-                    guardarScore("Jugador", calcularScorePorMuerte());
-                    scoreGuardado = true;
+                postDelayed(() -> Toast.makeText(getContext(), "You died! 💀", Toast.LENGTH_LONG).show(), 100);
+                if (!scoreSaved) {
+                    saveScore("Player", calculateDeathScore());
+                    scoreSaved = true;
                 }
             }
             if (gameBoard.isLevelComplete()) handleLevelComplete();
@@ -351,9 +345,9 @@ public class GameView extends View {
     private void handleLevelComplete() {
         int stars = gameBoard.calculateStars();
         String message;
-        if (stars == 3) message = "¡Perfecto! ⭐⭐⭐";
-        else if (stars == 2) message = "¡Muy bien! ⭐⭐";
-        else message = "¡Completado! ⭐";
+        if (stars == 3) message = "Perfect! ⭐⭐⭐";
+        else if (stars == 2) message = "Well done! ⭐⭐";
+        else message = "Completed! ⭐";
 
         int currentLevel = levelManager.getCurrentLevelNumber();
         progressManager.completeLevel(currentLevel, gameBoard.isPerfectCompletion());
@@ -368,22 +362,22 @@ public class GameView extends View {
     private void showGameCompleted() {
         int totalStars = progressManager.getTotalStars();
         Toast.makeText(getContext(),
-                "¡Juego completado! 🎉\nEstrellas totales: " + totalStars + "/15",
+                "Game completed! 🎉\nTotal stars: " + totalStars + "/15",
                 Toast.LENGTH_LONG).show();
 
         int score = totalStars * 100;
-        if (!scoreGuardado) {
-            guardarScore("Jugador", score);
-            scoreGuardado = true;
+        if (!scoreSaved) {
+            saveScore("Player", score);
+            scoreSaved = true;
         }
     }
 
-    private void guardarScore(String player, int score) {
+    private void saveScore(String player, int score) {
         ScoreDBHelper dbHelper = new ScoreDBHelper(getContext());
         dbHelper.addScore(player, score, "Water Lilies");
     }
 
-    private int calcularScorePorMuerte() {
+    private int calculateDeathScore() {
         return gameBoard.getLilyPadsVisited() * 10;
     }
 }

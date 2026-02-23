@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/duck_bg_water">
 
-    <!-- Contenedor vertical: título + nenúfares -->
     <LinearLayout
         android:id="@+id/menuContainer"
         android:layout_width="match_parent"
@@ -14,12 +13,11 @@
         android:gravity="center"
         android:padding="16dp">
 
-        <!-- Título del juego -->
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Water Lillies"
+            android:text="@string/water_lilies"
             android:textSize="50sp"
             android:textColor="#FFFFFF"
             android:textStyle="bold"
@@ -32,7 +30,6 @@
             android:gravity="center"
             android:fontFamily="@font/press_start_2_p"/>
 
-        <!-- Botones de nenúfares -->
         <LinearLayout
             android:id="@+id/menuButtons"
             android:layout_width="match_parent"
@@ -51,7 +48,7 @@
                 android:scaleType="fitCenter"
                 android:background="@android:color/transparent"
                 android:src="@drawable/duck_lily_pad_play"
-                android:contentDescription="Jugar"
+                android:contentDescription="@string/play"
                 android:layout_margin="8dp"/>
 
             <ImageButton
@@ -64,7 +61,7 @@
                 android:scaleType="fitCenter"
                 android:background="@android:color/transparent"
                 android:src="@drawable/duck_lily_pad_continue"
-                android:contentDescription="Continuar"
+                android:contentDescription="@string/continue_game"
                 android:layout_margin="8dp"/>
 
             <ImageButton
@@ -77,7 +74,7 @@
                 android:scaleType="fitCenter"
                 android:background="@android:color/transparent"
                 android:src="@drawable/duck_lily_pad_levels"
-                android:contentDescription="Niveles"
+                android:contentDescription="@string/levels"
                 android:layout_margin="8dp"/>
 
             <ImageButton
@@ -90,7 +87,7 @@
                 android:scaleType="fitCenter"
                 android:background="@android:color/transparent"
                 android:src="@drawable/duck_home"
-                android:contentDescription="Home"
+                android:contentDescription="@string/home"
                 android:layout_margin="8dp"/>
 
         </LinearLayout>

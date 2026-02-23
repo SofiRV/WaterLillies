@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sofirv.waterlilies.R;
 
+/**
+ * Adapter for displaying and handling interactions with the level selection screen.
+ */
 public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.LevelViewHolder> {
 
     private Context context;
@@ -18,6 +21,9 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.LevelViewHol
     private ProgressManager progressManager;
     private OnLevelClickListener listener;
 
+    /**
+     * Callback interface for notifying when a level is clicked.
+     */
     public interface OnLevelClickListener {
         void onLevelClick(int levelNumber);
     }
@@ -44,7 +50,7 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.LevelViewHol
         boolean unlocked = progressManager.isLevelUnlocked(levelNumber);
         holder.itemView.setEnabled(unlocked);
 
-        // Cambiar apariencia si está bloqueado
+        // Set the appearance depending on whether the level is unlocked
         if (!unlocked) {
             holder.ivLilyPad.setAlpha(0.4f);
         } else {
@@ -63,6 +69,9 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.LevelViewHol
         return totalLevels;
     }
 
+    /**
+     * Holds the views for each level entry in the list.
+     */
     static class LevelViewHolder extends RecyclerView.ViewHolder {
         ImageView ivLilyPad;
         TextView tvLevelNumber;

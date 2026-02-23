@@ -5,8 +5,17 @@ import android.content.res.XmlResourceParser;
 
 import org.xmlpull.v1.XmlPullParser;
 
+/**
+ * Utility class for loading a Level object from an XML resource.
+ */
 public class LevelLoader {
 
+    /**
+     * Loads a Level object from an XML resource file.
+     * @param context Android context.
+     * @param xmlResourceId XML resource to parse.
+     * @return Level object loaded from XML, or null if there is an error.
+     */
     public static Level loadLevelFromXml(Context context, int xmlResourceId) {
         try {
             XmlResourceParser parser = context.getResources().getXml(xmlResourceId);
@@ -20,7 +29,7 @@ public class LevelLoader {
 
                 switch (eventType) {
                     case XmlPullParser.START_TAG:
-                        if (tagName.equals("info")) {
+                        if ("info".equals(tagName)) {
                             int number = parser.getAttributeIntValue(null, "number", 1);
                             int rows = parser.getAttributeIntValue(null, "rows", 9);
                             int cols = parser.getAttributeIntValue(null, "cols", 9);
@@ -43,8 +52,8 @@ public class LevelLoader {
                         }
                         break;
 
-                    case XmlPullParser. END_TAG:
-                        if (tagName.equals("layout") && level != null) {
+                    case XmlPullParser.END_TAG:
+                        if ("layout".equals(tagName) && level != null) {
                             parseLayout(level, layoutText);
                         }
                         break;
@@ -62,8 +71,12 @@ public class LevelLoader {
         }
     }
 
+    /**
+     * Parses the layout data for the level and assigns it to the Level object.
+     * Expects layoutText as rows separated by spaces and columns separated by commas.
+     */
     private static void parseLayout(Level level, String layoutText) {
-        // Eliminar espacios extra y saltos de línea múltiples
+        // Remove extra spaces and consecutive newlines
         layoutText = layoutText.replaceAll("\\s+", " ").trim();
 
         String[] rows = layoutText.split(" ");
@@ -73,7 +86,7 @@ public class LevelLoader {
             String[] cols = rows[r].split(",");
             for (int c = 0; c < level.getCols() && c < cols.length; c++) {
                 try {
-                    layout[r][c] = Integer.parseInt(cols[c]. trim());
+                    layout[r][c] = Integer.parseInt(cols[c].trim());
                 } catch (NumberFormatException e) {
                     layout[r][c] = 0;
                 }

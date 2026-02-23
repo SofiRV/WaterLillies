@@ -1,11 +1,14 @@
 package com.sofirv.waterlilies.duckgame;
 
+/**
+ * Represents a single tile on the board, with its type and position.
+ */
 public class Tile {
     public enum TileType {
-        WATER,          // Agua (donde no se puede estar)
-        LILY_PAD,       // Nenúfar (se puede pisar)
-        SHORE,          // Orilla (bordes del estanque - SOLO VISUAL)
-        BREAD           // Pan (objetivo)
+        WATER,      // Water (cannot walk here)
+        LILY_PAD,   // Lily pad (can be stepped on)
+        SHORE,      // Shore (pond edge - visual only)
+        BREAD       // Bread (goal)
     }
 
     private TileType type;
@@ -14,8 +17,8 @@ public class Tile {
 
     public Tile(int row, int col, TileType type) {
         this.row = row;
-        this. col = col;
-        this. type = type;
+        this.col = col;
+        this.type = type;
     }
 
     public TileType getType() {
@@ -34,8 +37,11 @@ public class Tile {
         return col;
     }
 
+    /**
+     * Returns true if this tile is walkable (lily pad or bread).
+     */
     public boolean isWalkable() {
-        // Solo los nenúfares y el pan son caminables
+        // Only lily pads and bread are walkable
         return type == TileType.LILY_PAD || type == TileType.BREAD;
     }
 }

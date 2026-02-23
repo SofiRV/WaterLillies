@@ -11,6 +11,9 @@ import android.widget.ImageButton;
 import com.sofirv.waterlilies.R;
 import com.sofirv.waterlilies.main_app.HomeActivity;
 
+/**
+ * Main menu activity for the Duck Game, allowing users to play, continue, select levels or return home.
+ */
 public class MenuActivity extends AppCompatActivity {
 
     private ProgressManager progressManager;
@@ -21,12 +24,11 @@ public class MenuActivity extends AppCompatActivity {
     private ImageButton btnLevels;
     private ImageButton btnHome;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Pantalla completa
+        // Full screen mode (hide title and status bar)
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -39,18 +41,14 @@ public class MenuActivity extends AppCompatActivity {
 
         setContentView(R.layout.duck_activity_menu);
 
-        // Inicializar managers
         progressManager = new ProgressManager(this);
         levelManager = new LevelManager(this);
 
-        // Referencias a los ImageButtons
         btnPlay = findViewById(R.id.btnPlay);
         btnContinue = findViewById(R.id.btnContinue);
         btnLevels = findViewById(R.id.btnLevels);
         btnHome = findViewById(R.id.btn_home);
 
-
-        // Configurar clicks
         btnPlay.setOnClickListener(v -> {
             levelManager.resetToLevel1();
             startGame();
@@ -68,11 +66,9 @@ public class MenuActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-
-        // Actualizar visibilidad de continuar según progreso
         updateContinueButton();
 
-        // Modo inmersivo
+        // Immersive mode
         hideSystemUI();
     }
 
@@ -82,6 +78,10 @@ public class MenuActivity extends AppCompatActivity {
         updateContinueButton();
     }
 
+    /**
+     * Updates the visibility of the Continue button, showing only if level 2 or higher is unlocked
+     * or if the first level is completed.
+     */
     private void updateContinueButton() {
         int maxUnlocked = progressManager.getMaxLevelUnlocked();
         if (maxUnlocked > 1 || progressManager.isLevelCompleted(1)) {
@@ -96,6 +96,9 @@ public class MenuActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * Enables immersive fullscreen mode by hiding system UI elements.
+     */
     private void hideSystemUI() {
         View decorView = getWindow().getDecorView();
         decorView.setSystemUiVisibility(

@@ -15,13 +15,13 @@
         android:background="@android:color/transparent"
         android:scaleType="fitCenter"
         android:src="@drawable/duck_ic_back"
-        android:contentDescription="Volver al menú" />
-    <!-- Título -->
+        android:contentDescription="@string/back_to_menu" />
+
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Selecciona un nivel"
+        android:text="@string/level_select"
         android:textSize="36sp"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
@@ -29,7 +29,7 @@
         android:layout_marginBottom="20dp"
         android:fontFamily="@font/press_start_2_p"/>
 
-    <!-- RecyclerView -->
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvLevels"
         android:layout_width="match_parent"

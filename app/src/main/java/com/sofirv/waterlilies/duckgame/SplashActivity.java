@@ -9,6 +9,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.sofirv.waterlilies.R;
 
+/**
+ * Activity that displays a splash screen for the Duck Game.
+ * Automatically navigates to the main menu after a short delay.
+ */
 public class SplashActivity extends AppCompatActivity {
 
     @Override
@@ -18,12 +22,16 @@ public class SplashActivity extends AppCompatActivity {
 
         hideSystemUI();
 
+        // Navigate to MenuActivity after a 2-second delay
         new Handler().postDelayed(() -> {
             startActivity(new Intent(SplashActivity.this, MenuActivity.class));
             finish();
         }, 2000);
     }
 
+    /**
+     * Enables immersive fullscreen mode by hiding system UI elements.
+     */
     private void hideSystemUI() {
         View decorView = getWindow().getDecorView();
         decorView.setSystemUiVisibility(

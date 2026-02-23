@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="HOME"
+        android:text="@string/home"
         android:gravity="start"
         android:background="@color/pink_8"
         android:textStyle="bold"
@@ -32,7 +32,7 @@
         android:scaleType="fitCenter"
         android:background="@android:color/transparent"
         android:src="@drawable/ic_scores"
-        android:contentDescription="scores"
+        android:contentDescription="@string/scores"
         android:layout_margin="8dp"/>
 
     <ImageButton
@@ -45,7 +45,7 @@
         android:scaleType="fitCenter"
         android:background="@android:color/transparent"
         android:src="@drawable/ic_water_lilies"
-        android:contentDescription="water lilies"
+        android:contentDescription="@string/water_lilies"
         android:layout_margin="8dp"/>
 
     <ImageButton
@@ -58,7 +58,7 @@
         android:scaleType="fitCenter"
         android:background="@android:color/transparent"
         android:src="@drawable/ic_2048"
-        android:contentDescription="game 2048"
+        android:contentDescription="@string/game_2048"
         android:layout_margin="8dp"/>
 
 </LinearLayout>

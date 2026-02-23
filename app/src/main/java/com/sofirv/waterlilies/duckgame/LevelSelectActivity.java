@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sofirv.waterlilies.R;
 
+/**
+ * Activity for selecting a level to play in the Duck Game.
+ */
 public class LevelSelectActivity extends AppCompatActivity {
 
     private ProgressManager progressManager;
@@ -31,23 +34,27 @@ public class LevelSelectActivity extends AppCompatActivity {
         btnBackMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Volver al menú
+                // Return to the main menu
                 Intent intent = new Intent(LevelSelectActivity.this, MenuActivity.class);
                 startActivity(intent);
-                finish(); // cerrar LevelSelectActivity
+                finish(); // Close LevelSelectActivity
             }
         });
 
-        // Grid de 3 columnas
+        // Grid with 5 columns for level selection
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 5);
         rvLevels.setLayoutManager(gridLayoutManager);
 
-        LevelAdapter adapter = new LevelAdapter(this, levelManager.getTotalLevels(), progressManager, levelNumber -> {
-            // Al hacer clic en un nivel desbloqueado
-            levelManager.setCurrentLevel(levelNumber);
-            Intent intent = new Intent(LevelSelectActivity.this, GameActivity.class);
-            startActivity(intent);
-        });
+        LevelAdapter adapter = new LevelAdapter(
+                this,
+                levelManager.getTotalLevels(),
+                progressManager,
+                levelNumber -> {
+                    // When clicking on an unlocked level
+                    levelManager.setCurrentLevel(levelNumber);
+                    Intent intent = new Intent(LevelSelectActivity.this, GameActivity.class);
+                    startActivity(intent);
+                });
 
         rvLevels.setAdapter(adapter);
     }
@@ -58,7 +65,9 @@ public class LevelSelectActivity extends AppCompatActivity {
         hideSystemUI();
     }
 
-    // Método para modo inmersivo
+    /**
+     * Enables immersive fullscreen mode by hiding system UI elements.
+     */
     private void hideSystemUI() {
         View decorView = getWindow().getDecorView();
         decorView.setSystemUiVisibility(

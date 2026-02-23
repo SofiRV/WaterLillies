@@ -3,13 +3,16 @@ package com.sofirv.waterlilies.game2048;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
+/**
+ * Handles swipe gesture detection for the 2048 game.
+ * Detects swipe direction and invokes movement methods in MainActivity2048.
+ */
 public class GestureListener extends GestureDetector.SimpleOnGestureListener {
     private static final int SWIPE_THRESHOLD = 100;
     private static final int SWIPE_VELOCITY_THRESHOLD = 100;
     private MainActivity2048 activity;
 
-
-    public GestureListener(MainActivity2048 activity){
+    public GestureListener(MainActivity2048 activity) {
         this.activity = activity;
     }
 
@@ -32,7 +35,7 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
                 }
                 return true;
             }
-        }else {
+        } else {
             if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
                 if (diffY > 0) {
                     moveDown();

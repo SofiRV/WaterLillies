@@ -4,21 +4,19 @@
     android:layout_height="120dp"
     android:padding="8dp">
 
-    <!-- Imagen de nenúfar -->
     <ImageView
         android:id="@+id/ivLilyPad"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitCenter"
-        android:contentDescription="Nivel"
+        android:contentDescription="@string/level"
         android:src="@drawable/duck_basic_lily"/>
 
-    <!-- Texto con número de nivel -->
     <TextView
         android:id="@+id/tvLevelNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="1"
+        android:text="@string/_1"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
         android:textSize="20sp"

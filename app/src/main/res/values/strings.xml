@@ -8,4 +8,21 @@
     <string name="reset">Reset</string>
     <string name="step_back">Step back</string>
     <string name="timer">Timer</string>
+    <string name="home">HOME</string>
+    <string name="scores">scores</string>
+    <string name="water_lilies">water lilies</string>
+    <string name="game_2048">game 2048</string>
+    <string name="search_scores">SEARCH SCORES</string>
+    <string name="search_by_player_name_or_game_name">Search by player name or game name...</string>
+    <string name="search">Search</string>
+    <string name="search_score">Search Score</string>
+    <string name="back_to_menu">Back to menu</string>
+    <string name="level_select">Level select</string>
+    <string name="play">Play</string>
+    <string name="continue_game">Continue</string>
+    <string name="levels">Levels</string>
+    <string name="level">Level</string>
+    <string name="_1">1</string>
+    <string name="_00_00">00:00</string>
+    <string name="search_menu">Search...</string>
 </resources>
