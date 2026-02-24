@@ -334,7 +334,10 @@ public class GameView extends View {
             if (gameBoard.isDead()) {
                 postDelayed(() -> Toast.makeText(getContext(), "You died! 💀", Toast.LENGTH_LONG).show(), 100);
                 if (!scoreSaved) {
-                    saveScore("Player", calculateDeathScore());
+                    String username = getContext()
+                            .getSharedPreferences("AppPrefs", Context.MODE_PRIVATE)
+                            .getString("loggedUser", "Unknown");
+                    saveScore(username, calculateDeathScore());
                     scoreSaved = true;
                 }
             }
@@ -367,14 +370,20 @@ public class GameView extends View {
 
         int score = totalStars * 100;
         if (!scoreSaved) {
-            saveScore("Player", score);
+            String username = getContext()
+                    .getSharedPreferences("AppPrefs", Context.MODE_PRIVATE)
+                    .getString("loggedUser", "Unknown");
+            saveScore(username, score);
             scoreSaved = true;
         }
     }
 
     private void saveScore(String player, int score) {
+        String username = getContext()
+                .getSharedPreferences("AppPrefs", Context.MODE_PRIVATE)
+                .getString("loggedUser", "Unknown");
         ScoreDBHelper dbHelper = new ScoreDBHelper(getContext());
-        dbHelper.addScore(player, score, "Water Lilies");
+        dbHelper.insertScore(username, score, "Water Lilies");
     }
 
     private int calculateDeathScore() {

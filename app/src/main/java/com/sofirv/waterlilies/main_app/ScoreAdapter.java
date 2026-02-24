@@ -12,17 +12,26 @@ import com.sofirv.waterlilies.R;
 
 import java.util.List;
 
+/**
+ * RecyclerView Adapter for displaying a list of Score objects.
+ */
 public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ViewHolder> {
 
-    private final List<Score> scores;
+    // List of Score objects to display
+    private final List<Score> scoreList;
 
-    public ScoreAdapter(List<Score> scores) {
-        this.scores = scores;
+    /**
+     * Constructor for ScoreAdapter.
+     * @param scoreList The list of Score objects to bind and display.
+     */
+    public ScoreAdapter(List<Score> scoreList) {
+        this.scoreList = scoreList;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // Inflate the item layout for each score row
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_score, parent, false);
         return new ViewHolder(itemView);
@@ -30,7 +39,8 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Score score = scores.get(position);
+        // Bind Score data to view elements
+        Score score = scoreList.get(position);
         holder.tvPlayer.setText("Player: " + score.player);
         holder.tvScore.setText("Score: " + score.score);
         holder.tvGame.setText("Game: " + score.game);
@@ -39,12 +49,19 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return scores.size();
+        return scoreList.size();
     }
 
+    /**
+     * ViewHolder class for Score items.
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvPlayer, tvScore, tvGame, tvDate;
 
+        /**
+         * Constructor for ViewHolder.
+         * @param itemView The view representing each score item.
+         */
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvPlayer = itemView.findViewById(R.id.tvPlayer);

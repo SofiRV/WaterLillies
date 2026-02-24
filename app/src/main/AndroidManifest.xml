@@ -12,14 +12,17 @@
         android:theme="@style/Theme.WaterLillies"
         tools:targetApi="31">
 
-        <activity
-            android:name="com.sofirv.waterlilies.main_app.HomeActivity"
-            android:exported="true"
-            android:screenOrientation="portrait">
+        <activity android:name=".main_app.LoginActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.sofirv.waterlilies.main_app.HomeActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="com.sofirv.waterlilies.duckgame.SplashActivity"

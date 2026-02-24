@@ -506,8 +506,12 @@ public class MainActivity2048 extends AppCompatActivity {
 
     // Save the score in the DB when the game ends
     private void onGameOver(int finalScore) {
+        // Get the logged in username from SharedPreferences (default to "Unknown" if not found)
+        String username = getSharedPreferences("AppPrefs", MODE_PRIVATE)
+                .getString("loggedUser", "Unknown");
+
         ScoreDBHelper dbHelper = new ScoreDBHelper(this);
-        dbHelper.addScore("Player", finalScore, "2048");
+        dbHelper.insertScore(username, finalScore, "2048");
         Toast.makeText(this, "Game Over! Score: " + finalScore, Toast.LENGTH_SHORT).show();
         updateHighScoreFromDB();
     }
